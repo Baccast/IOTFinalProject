@@ -16,11 +16,9 @@ def toggle_lights(lane1, lane2):
 
 
 def laserSetup():
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BOARD)         # Numbers pins by physical location
-    GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)   # Set pin mode as output
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
-    # Set LaserRecvPin's mode as input, and pull up to high level(3.3V)
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
@@ -67,7 +65,6 @@ def detect_car():
         return True
     else:
         return False
-    time.sleep(0.1)
 
 
 def print_lights(lane1, lane2):
@@ -102,9 +99,10 @@ class TrafficLane:
         self.light_color = 'Yellow'
 
 
-if "__main__" == __name__:
+if __name__ == "__main__":
     # Set up the laser sensor
     laserSetup()
+
     # Run the traffic simulation
     try:
         run_traffic_simulation()
