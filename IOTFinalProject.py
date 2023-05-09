@@ -2,8 +2,8 @@ import RPi.GPIO as GPIO
 import time
 
 # RGB LED pins
-PIN_R = 11
-PIN_G = 12
+PIN_R = 5
+PIN_G = 6
 PIN_B = 13
 
 # Traffic light pins
