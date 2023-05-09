@@ -54,7 +54,7 @@ def laserSetup():
     GPIO.setup(BUZZER_PIN, GPIO.OUT)   # Set pin mode as output
     GPIO.output(BUZZER_PIN, GPIO.LOW)
     GPIO.setup(GREEN_PIN, GPIO.OUT)   # Set LedPin's mode is output
-    GPIO.output(GREEN_PIN, GPIO.LOW)  # Set LedPin high(+3.3V) to off led
+    GPIO.output(GREEN_PIN, GPIO.HIGH)  # Set LedPin high(+3.3V) to off led
 
 
 # Run the traffic simulation
