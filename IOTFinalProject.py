@@ -43,8 +43,6 @@ class TrafficLightGUI:
 
 
 # Set up the laser sensor
-
-
 def laserSetup():
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)  # Use BCM numbering for GPIO pins
@@ -72,15 +70,15 @@ def run_traffic_simulation(gui):
         car_detected = detect_car()
 
         if car_detected and not car_previous_state:
-            print("Car detected in Lane 2")
-            time.sleep(2)
+            print('Car detected!')
             lane1.set_yellow()
+            gui.update_lights(lane1.light_color, lane2.light_color)
             time.sleep(2)
+            # Set Lane 1 red and Lane 2 green
             lane1.set_red()
             lane2.set_green()
             gui.update_lights(lane1.light_color, lane2.light_color)
             time.sleep(5)
-            car_previous_state = car_detected
 
         # Set Lane 1 green and Lane 2 red
         lane2.set_yellow()
@@ -120,11 +118,9 @@ def detect_car():
     # Simulated car detection mechanism using laser interruption
     # Replace this with your actual laser sensor detection logic
     if GPIO.input(RECEIVER_PIN) == GPIO.HIGH:
-        return True
-    else:
         return False
-
-# Traffic lane class
+    else:
+        return True
 
 
 def crossWalk():
