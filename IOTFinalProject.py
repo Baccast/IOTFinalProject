@@ -84,6 +84,7 @@ def button_check():
         button_detected = detect_button()
         if button_detected:
             print("Button Pressed")
+            crossWalk()
 
 
 def detect_button():
@@ -105,6 +106,14 @@ def detect_car():
         return False
 
 # Traffic lane class
+
+
+def crossWalk():
+    # Turn both lights red and sleep for 10 seconds
+    lane1.set_red()
+    lane2.set_red()
+    gui.update_lights(lane1.light_color, lane2.light_color)
+    time.sleep(10)
 
 
 class TrafficLane:
