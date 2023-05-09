@@ -1,72 +1,113 @@
-#!/usr/bin/env python
-import RPi.GPIO as GPIO
 import time
+import RPi.GPIO as GPIO
 
-# GPIO channel numbers for RGB LED pins
-PIN_R = 11
-PIN_G = 6
-PIN_B = 13
-
-# Colors in RGB format
-COLOR_RED = (255, 0, 0)
-COLOR_YELLOW = (255, 255, 0)
-COLOR_GREEN = (0, 255, 0)
-
-# Setup GPIO pins
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(PIN_R, GPIO.OUT)
-GPIO.setup(PIN_G, GPIO.OUT)
-GPIO.setup(PIN_B, GPIO.OUT)
-
-# Initialize PWM instances for each pin
-p_R = GPIO.PWM(PIN_R, 2000)  # Frequency: 2KHz
-p_G = GPIO.PWM(PIN_G, 2000)
-p_B = GPIO.PWM(PIN_B, 2000)
-
-# Start with all LEDs off
-p_R.start(0)
-p_G.start(0)
-p_B.start(0)
+# Set up GPIO pins
+GPIO.setmode(GPIO.BCM)
+TRANSMITTER_PIN = 17
+RECEIVER_PIN = 27
+GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)
+GPIO.setup(RECEIVER_PIN, GPIO.IN)
 
 
-def set_color(color):
-    # Set the RGB LED color
-    r, g, b = color
-
-    # Map color values from 0-255 to 0-100 (duty cycle)
-    r = map_value(r, 0, 255, 0, 100)
-    g = map_value(g, 0, 255, 0, 100)
-    b = map_value(b, 0, 255, 0, 100)
-
-    # Set duty cycle for each pin
-    p_R.ChangeDutyCycle(r)
-    p_G.ChangeDutyCycle(g)
-    p_B.ChangeDutyCycle(b)
+def toggle_lights(lane1, lane2):
+    # Toggle the lights in each lane
+    lane1.toggle()
+    lane2.toggle()
 
 
-def map_value(x, in_min, in_max, out_min, out_max):
-    # Map a value from one range to another
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+def laserSetup():
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)         # Numbers pins by physical location
+    GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)   # Set pin mode as output
+    GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
+    # Set LaserRecvPin's mode as input, and pull up to high level(3.3V)
+    GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
-try:
+def run_traffic_simulation():
+    # Initialize the lane objects
+    lane1 = TrafficLane('Lane 1')
+    lane2 = TrafficLane('Lane 2')
+
     while True:
-        # Set the RGB LED color based on the road light state
-        road_light_state = input("Enter road light state (red/yellow/green): ")
-        if road_light_state == "red":
-            set_color(COLOR_RED)
-        elif road_light_state == "yellow":
-            set_color(COLOR_YELLOW)
-        elif road_light_state == "green":
-            set_color(COLOR_GREEN)
+        # Check if car is detected in Lane 2
+        car_detected = detect_car()
+
+        # Set Lane 1 green and Lane 2 red
+        lane1.set_green()
+        lane2.set_red()
+        print_lights(lane1, lane2)
+        time.sleep(5)
+
+        # Set Lane 1 yellow and Lane 2 red
+        lane1.set_yellow()
+        print_lights(lane1, lane2)
+        time.sleep(2)
+
+        # Set Lane 1 red and Lane 2 green if car is detected
+        if car_detected:
+            lane1.set_red()
+            lane2.set_green()
+            print_lights(lane1, lane2)
+            time.sleep(5)
         else:
-            print("Invalid road light state. Please enter red, yellow, or green.")
+            print("No car detected in Lane 2")
 
-        time.sleep(1)
+        # Set Lane 1 red and Lane 2 yellow
+        lane1.set_red()
+        lane2.set_yellow()
+        print_lights(lane1, lane2)
+        time.sleep(2)
 
-except KeyboardInterrupt:
-    # Cleanup GPIO and stop PWM
-    p_R.stop()
-    p_G.stop()
-    p_B.stop()
-    GPIO.cleanup()
+
+def detect_car():
+    # Simulated car detection mechanism using laser interruption
+    # Replace this with your actual laser sensor detection logic
+    if GPIO.input(RECEIVER_PIN) == GPIO.HIGH:
+        return True
+    else:
+        return False
+    time.sleep(0.1)
+
+
+def print_lights(lane1, lane2):
+    # Print the status of the lights in each lane
+    print(f'{lane1.name}: {lane1.light_color}')
+    print(f'{lane2.name}: {lane2.light_color}')
+    print('---')
+
+
+class TrafficLane:
+    def __init__(self, name):
+        self.name = name
+        self.light_color = 'Red'
+
+    def toggle(self):
+        # Toggle the light color
+        if self.light_color == 'Red':
+            self.light_color = 'Green'
+        else:
+            self.light_color = 'Red'
+
+    def set_red(self):
+        # Set the light color to red
+        self.light_color = 'Red'
+
+    def set_green(self):
+        # Set the light color to green
+        self.light_color = 'Green'
+
+    def set_yellow(self):
+        # Set the light color to yellow
+        self.light_color = 'Yellow'
+
+
+if "__main__" == __name__:
+    # Set up the laser sensor
+    laserSetup()
+    # Run the traffic simulation
+    try:
+        run_traffic_simulation()
+    except KeyboardInterrupt:
+        GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
+        GPIO.cleanup()
