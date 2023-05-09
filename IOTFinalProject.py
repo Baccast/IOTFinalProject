@@ -84,6 +84,13 @@ def print_lights(lane1, lane2):
     print('---')
 
 
+def turn_off_lights():
+    # Turn off all lights
+    GPIO.output(LANE2GREEN_PIN, GPIO.LOW)
+    GPIO.output(LANE2RED_PIN, GPIO.LOW)
+    GPIO.output(LANE2YELLOW_PIN, GPIO.LOW)
+
+
 class TrafficLane:
     def __init__(self, name):
         self.name = name
