@@ -5,6 +5,7 @@ import tkinter as tk
 # Set up GPIO pins
 TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
+Button_PIN = 22
 
 
 class TrafficLightGUI:
@@ -41,6 +42,20 @@ def laserSetup():
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
+def buttonSetup():
+    GPIO.setup(Button_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+
+# Check for button press and if so turn both lights red
+def buttonPress():
+    if GPIO.input(Button_PIN) == GPIO.HIGH:
+        print("Button Pressed")
+        lane1.set_red()
+        lane2.set_red()
+        gui.update_lights(lane1.light_color, lane2.light_color)
+        time.sleep(5)
+
+
 def run_traffic_simulation(gui):
     # Initialize the lane objects
     lane1 = TrafficLane('Lane 1')
@@ -52,6 +67,11 @@ def run_traffic_simulation(gui):
     while True:
         # Check if car is detected in Lane 2
         car_detected = detect_car()
+
+        button_detected = detect_button()
+
+        if button_detected:
+            buttonPress()
 
         if car_detected and not car_previous_state:
             print("Car detected in Lane 2")
@@ -87,6 +107,16 @@ def detect_car():
     time.sleep(0.1)
 
 
+def detect_button():
+    # Simulated button detection mechanism using button press
+    # Replace this with your actual button detection logic
+    if GPIO.input(Button_PIN) == GPIO.HIGH:
+        return True
+    else:
+        return False
+    time.sleep(0.1)
+
+
 class TrafficLane:
     def __init__(self, name):
         self.name = name
@@ -116,4 +146,3 @@ if __name__ == '__main__':
     root.geometry('400x200')
     gui = TrafficLightGUI(root)
     run_traffic_simulation(gui)
-    root.mainloop()
