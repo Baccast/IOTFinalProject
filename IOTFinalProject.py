@@ -36,6 +36,7 @@ def run_traffic_simulation():
 
         if car_detected and not car_previous_state:
             print("Car detected in Lane 2")
+            time.sleep(3)
 
         # Set Lane 1 green and Lane 2 red
         lane1.set_green()
