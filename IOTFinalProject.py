@@ -34,9 +34,6 @@ def run_traffic_simulation():
     lane1 = TrafficLane('Lane 1')
     lane2 = TrafficLane('Lane 2')
 
-    # Turn off all lights
-    turn_off_lights()
-
     while True:
         # Check if car is detected in Lane 2
         car_detected = detect_car()
@@ -128,7 +125,8 @@ class TrafficLane:
 if __name__ == "__main__":
     # Set up the laser sensor
     laserSetup()
-
+    # Turn off all lights
+    turn_off_lights()
     # Run the traffic simulation
     try:
         run_traffic_simulation()
