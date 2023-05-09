@@ -29,14 +29,6 @@ class TrafficLightGUI:
             text=f'Lane 2: {lane2_color}', fg='green' if lane2_color == 'Green' else 'red')
         self.root.update()
 
-# Toggle the lights in each lane
-
-
-def toggle_lights(lane1, lane2):
-    # Toggle the lights in each lane
-    lane1.toggle()
-    lane2.toggle()
-
 # Set up the laser sensor
 
 
@@ -45,8 +37,6 @@ def laserSetup():
     GPIO.setmode(GPIO.BCM)  # Use BCM numbering for GPIO pins
     GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)  # Set pin mode as output
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
-    GPIO.setup(RECEIVER_PIN, GPIO.IN)
-    # Set LaserRecvPin's mode as input, and pull up to high level(3.3V)
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
@@ -112,7 +102,6 @@ def detect_car():
         return True
     else:
         return False
-    time.sleep(0.1)
 
 # Traffic lane class
 
@@ -153,6 +142,8 @@ if __name__ == '__main__':
 
     simulation_thread.start()
     button_thread.start()
+
+    root.mainloop()  # Start the GUI event loop
 
     # Wait for threads to finish
     simulation_thread.join()
