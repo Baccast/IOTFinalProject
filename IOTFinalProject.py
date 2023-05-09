@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 
 # Set up GPIO pins
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)  # Disable GPIO warnings
 TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
 LANE2GREEN_PIN = 22
@@ -32,6 +33,9 @@ def run_traffic_simulation():
     # Initialize the lane objects
     lane1 = TrafficLane('Lane 1')
     lane2 = TrafficLane('Lane 2')
+
+    # Turn off all lights
+    turn_off_lights()
 
     while True:
         # Check if car is detected in Lane 2
