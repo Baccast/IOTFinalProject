@@ -14,8 +14,8 @@ def toggle_lights(lane1, lane2):
 
 def laserSetup():
     GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BOARD)         # Numbers pins by physical location
-    GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)   # Set pin mode as output
+    GPIO.setmode(GPIO.BCM)  # Use BCM numbering for GPIO pins
+    GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)  # Set pin mode as output
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
     GPIO.setup(RECEIVER_PIN, GPIO.IN)
     # Set LaserRecvPin's mode as input, and pull up to high level(3.3V)
