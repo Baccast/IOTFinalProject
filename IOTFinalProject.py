@@ -4,8 +4,6 @@ import RPi.GPIO as GPIO
 # Set up GPIO pins
 TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
-GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)
-GPIO.setup(RECEIVER_PIN, GPIO.IN)
 
 
 def toggle_lights(lane1, lane2):
@@ -19,6 +17,7 @@ def laserSetup():
     GPIO.setmode(GPIO.BOARD)         # Numbers pins by physical location
     GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)   # Set pin mode as output
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
+    GPIO.setup(RECEIVER_PIN, GPIO.IN)
     # Set LaserRecvPin's mode as input, and pull up to high level(3.3V)
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
