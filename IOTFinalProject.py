@@ -99,11 +99,10 @@ def detect_button():
     # Check whether the button is pressed or not.
     button_state = GPIO.input(BUTTON_PIN)
     if button_state == GPIO.LOW:
-        time.sleep(3)
+        time.sleep(1)
         return True
     else:
         return False
-    time.sleep(0.1)
 
 
 def detect_car():
