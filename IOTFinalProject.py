@@ -27,9 +27,15 @@ def run_traffic_simulation():
     lane1 = TrafficLane('Lane 1')
     lane2 = TrafficLane('Lane 2')
 
+    car_detected = False
+    car_previous_state = False
+
     while True:
         # Check if car is detected in Lane 2
         car_detected = detect_car()
+
+        if car_detected and not car_previous_state:
+            print("Car detected in Lane 2")
 
         # Set Lane 1 green and Lane 2 red
         lane1.set_green()
@@ -39,7 +45,6 @@ def run_traffic_simulation():
 
         # Set Lane 1 red and Lane 2 green if car is detected
         if car_detected:
-            print("Car detected in Lane 2")
             lane1.set_yellow()
             time.sleep(2)
             lane1.set_red()
@@ -49,11 +54,13 @@ def run_traffic_simulation():
         else:
             print("No car detected in Lane 2")
 
+        car_previous_state = car_detected
+
 
 def detect_car():
     # Simulated car detection mechanism using laser interruption
     # Replace this with your actual laser sensor detection logic
-    if GPIO.input(RECEIVER_PIN) == GPIO.HIGH:
+    if GPIO.input(RECEIVER_PIN) == GPIO.LOW:
         return True
     else:
         return False
