@@ -23,11 +23,23 @@ class TrafficLightGUI:
 
     # Update the traffic light colors
     def update_lights(self, lane1_color, lane2_color):
-        self.lane1_light.config(
-            text=f'Lane 1: {lane1_color}', fg='green' if lane1_color == 'Green' else 'red')
-        self.lane2_light.config(
-            text=f'Lane 2: {lane2_color}', fg='green' if lane2_color == 'Green' else 'red')
+        lane1_text = f'Lane 1: {lane1_color}'
+        lane2_text = f'Lane 2: {lane2_color}'
+        lane1_fg_color = 'green' if lane1_color == 'Green' else 'red'
+        lane2_fg_color = 'green' if lane2_color == 'Green' else 'red'
+
+        if lane1_color == 'Yellow':
+            lane1_text += ' (Caution!)'
+            lane1_fg_color = 'yellow'
+
+        if lane2_color == 'Yellow':
+            lane2_text += ' (Caution!)'
+            lane2_fg_color = 'yellow'
+
+        self.lane1_light.config(text=lane1_text, fg=lane1_fg_color)
+        self.lane2_light.config(text=lane2_text, fg=lane2_fg_color)
         self.root.update()
+
 
 # Set up the laser sensor
 
@@ -112,6 +124,11 @@ def crossWalk():
     lane1 = TrafficLane('Lane 1')
     lane2 = TrafficLane('Lane 2')
 
+    time.sleep(3)
+    lane1.set_yellow()
+    lane2.set_yellow()
+    gui.update_lights(lane1.light_color, lane2.light_color)
+    time.sleep(2)
     # For 10 seconds force both lights to stay red
     endTime = time.time() + 10
     while time.time() < endTime:
