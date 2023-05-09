@@ -69,7 +69,7 @@ def run_traffic_simulation(gui):
         # Check if car is detected in Lane 2
         car_detected = detect_car()
 
-        if car_detected and not car_previous_state:
+        if car_detected:
             print('Car detected!')
             lane1.set_yellow()
             gui.update_lights(lane1.light_color, lane2.light_color)
