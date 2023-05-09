@@ -125,7 +125,7 @@ def button_check():
         button_detected = detect_button()
         if button_detected:
             print("Button Pressed")
-            crossWalk()
+            crossWalk(gui)
 
 
 def detect_button():
@@ -147,7 +147,7 @@ def detect_car():
         return True
 
 
-def crossWalk():
+def crossWalk(gui):
     lane1 = TrafficLane('Lane 1')
     lane2 = TrafficLane('Lane 2')
 
@@ -160,7 +160,6 @@ def crossWalk():
     time.sleep(1)
     GPIO.output(BUZZER_PIN, GPIO.LOW)
     # For 10 seconds force both lights to stay red
-    gui = TrafficLightGUI(root)
     gui.showPedestrian()
     endTime = time.time() + 10
     while time.time() < endTime:
