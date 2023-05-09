@@ -5,6 +5,7 @@ import tkinter as tk
 # Set up GPIO pins
 TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
+BUTTON_PIN = 22
 
 # GUI settings
 
@@ -46,6 +47,7 @@ def laserSetup():
     GPIO.setup(RECEIVER_PIN, GPIO.IN)
     # Set LaserRecvPin's mode as input, and pull up to high level(3.3V)
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # Run the traffic simulation
 
@@ -61,10 +63,21 @@ def run_traffic_simulation(gui):
     while True:
         # Check if car is detected in Lane 2
         car_detected = detect_car()
+        button_detected = detect_button()
+
+        # If button pressed print "Button Pressed"
+        if button_detected:
+            print("Button Pressed")
 
         if car_detected and not car_previous_state:
             print("Car detected in Lane 2")
-            time.sleep(3)
+            time.sleep(2)
+            lane1.set_yellow()
+            time.sleep(2)
+            lane1.set_red()
+            lane2.set_green()
+            gui.update_lights(lane1.light_color, lane2.light_color)
+            time.sleep(5)
 
         # Set Lane 1 green and Lane 2 red
         lane1.set_green()
@@ -72,20 +85,18 @@ def run_traffic_simulation(gui):
         gui.update_lights(lane1.light_color, lane2.light_color)
         time.sleep(5)
 
-        # Set Lane 1 red and Lane 2 green if car is detected
-        if car_detected:
-            lane1.set_yellow()
-            time.sleep(2)
-            lane1.set_red()
-            lane2.set_green()
-            gui.update_lights(lane1.light_color, lane2.light_color)
-            time.sleep(5)
-        else:
-            print("No car detected in Lane 2")
-
         car_previous_state = car_detected
 
 # Simulate the car detection mechanism
+
+
+def detect_button():
+    # Check whether the button is pressed or not.
+    if GPIO.input(BUTTON_PIN) == GPIO.LOW:
+        return True
+    else:
+        return False
+    time.sleep(0.1)
 
 
 def detect_car():
