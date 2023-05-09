@@ -92,11 +92,13 @@ def run_traffic_simulation(gui):
 
 def detect_button():
     # Check whether the button is pressed or not.
-    if GPIO.input(BUTTON_PIN) == GPIO.LOW:
+    button_state = GPIO.input(BUTTON_PIN)
+    if button_state == GPIO.LOW:
+        # Wait for button release
+        GPIO.wait_for_edge(BUTTON_PIN, GPIO.RISING)
         return True
     else:
         return False
-    time.sleep(0.1)
 
 
 def detect_car():
