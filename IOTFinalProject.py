@@ -2,7 +2,6 @@ import time
 import RPi.GPIO as GPIO
 
 # Set up GPIO pins
-GPIO.setmode(GPIO.BCM)
 TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
 GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)
