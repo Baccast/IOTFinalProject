@@ -6,6 +6,8 @@ import tkinter as tk
 TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
 
+# GUI settings
+
 
 class TrafficLightGUI:
     def __init__(self, root):
@@ -17,6 +19,7 @@ class TrafficLightGUI:
         self.lane1_light.pack()
         self.lane2_light.pack()
 
+    # Update the traffic light colors
     def update_lights(self, lane1_color, lane2_color):
         self.lane1_light.config(
             text=f'Lane 1: {lane1_color}', fg='green' if lane1_color == 'Green' else 'red')
@@ -24,11 +27,15 @@ class TrafficLightGUI:
             text=f'Lane 2: {lane2_color}', fg='green' if lane2_color == 'Green' else 'red')
         self.root.update()
 
+# Toggle the lights in each lane
+
 
 def toggle_lights(lane1, lane2):
     # Toggle the lights in each lane
     lane1.toggle()
     lane2.toggle()
+
+# Set up the laser sensor
 
 
 def laserSetup():
@@ -39,6 +46,8 @@ def laserSetup():
     GPIO.setup(RECEIVER_PIN, GPIO.IN)
     # Set LaserRecvPin's mode as input, and pull up to high level(3.3V)
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+# Run the traffic simulation
 
 
 def run_traffic_simulation(gui):
@@ -76,6 +85,8 @@ def run_traffic_simulation(gui):
 
         car_previous_state = car_detected
 
+# Simulate the car detection mechanism
+
 
 def detect_car():
     # Simulated car detection mechanism using laser interruption
@@ -85,6 +96,8 @@ def detect_car():
     else:
         return False
     time.sleep(0.1)
+
+# Traffic lane class
 
 
 class TrafficLane:
@@ -109,6 +122,7 @@ class TrafficLane:
         self.light_color = 'Yellow'
 
 
+# Main function
 if __name__ == '__main__':
     laserSetup()
     root = tk.Tk()
