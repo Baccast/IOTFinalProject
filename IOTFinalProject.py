@@ -1,6 +1,7 @@
 import time
 import RPi.GPIO as GPIO
 import tkinter as tk
+import threading
 
 # Set up GPIO pins
 TRANSMITTER_PIN = 17
@@ -63,11 +64,6 @@ def run_traffic_simulation(gui):
     while True:
         # Check if car is detected in Lane 2
         car_detected = detect_car()
-        button_detected = detect_button()
-
-        # If button pressed print "Button Pressed"
-        if button_detected:
-            print("Button Pressed")
 
         if car_detected and not car_previous_state:
             print("Car detected in Lane 2")
@@ -89,16 +85,24 @@ def run_traffic_simulation(gui):
 
 # Simulate the car detection mechanism
 
+# Check for button input
+
+
+def button_check():
+    while True:
+        button_detected = detect_button()
+        if button_detected:
+            print("Button Pressed")
+
 
 def detect_button():
     # Check whether the button is pressed or not.
     button_state = GPIO.input(BUTTON_PIN)
     if button_state == GPIO.LOW:
-        # Wait for button release
-        GPIO.wait_for_edge(BUTTON_PIN, GPIO.RISING)
         return True
     else:
         return False
+    time.sleep(0.1)
 
 
 def detect_car():
@@ -142,4 +146,14 @@ if __name__ == '__main__':
     root.title('Traffic Light Simulation')
     root.geometry('400x200')
     gui = TrafficLightGUI(root)
-    run_traffic_simulation(gui)
+
+    simulation_thread = threading.Thread(
+        target=run_traffic_simulation, args=(gui,))
+    button_thread = threading.Thread(target=button_check)
+
+    simulation_thread.start()
+    button_thread.start()
+
+    # Wait for threads to finish
+    simulation_thread.join()
+    button_thread.join()
