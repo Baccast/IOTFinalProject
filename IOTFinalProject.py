@@ -62,10 +62,11 @@ def run_traffic_simulation():
 def detect_car():
     # Simulated car detection mechanism using laser interruption
     # Replace this with your actual laser sensor detection logic
-    if GPIO.input(RECEIVER_PIN) == GPIO.LOW:
+    if GPIO.input(RECEIVER_PIN) == GPIO.HIGH:
         return True
     else:
         return False
+    time.sleep(0.1)
 
 
 def print_lights(lane1, lane2):
@@ -107,5 +108,5 @@ if "__main__" == __name__:
     try:
         run_traffic_simulation()
     except KeyboardInterrupt:
-        GPIO.output(LaserPin, GPIO.HIGH)
+        GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
         GPIO.cleanup()
