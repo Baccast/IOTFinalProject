@@ -118,7 +118,7 @@ def crossWalk():
         lane1.set_red()
         lane2.set_red()
         gui.update_lights(lane1.light_color, lane2.light_color)
-        time.sleep(1)
+        time.sleep(0.1)
 
 
 class TrafficLane:
