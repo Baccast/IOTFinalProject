@@ -8,6 +8,7 @@ TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
 BUTTON_PIN = 22
 BUZZER_PIN = 6
+GREEN_PIN = 13
 
 # GUI settings
 
@@ -52,6 +53,8 @@ def laserSetup():
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(BUZZER_PIN, GPIO.OUT)   # Set pin mode as output
     GPIO.output(BUZZER_PIN, GPIO.LOW)
+    GPIO.setup(GREEN_PIN, GPIO.OUT)   # Set LedPin's mode is output
+    GPIO.output(GREEN_PIN, GPIO.LOW)  # Set LedPin high(+3.3V) to off led
 
 
 # Run the traffic simulation
@@ -71,6 +74,7 @@ def run_traffic_simulation(gui):
 
         if car_detected:
             print('Car detected!')
+            time.sleep(3)
             lane1.set_yellow()
             gui.update_lights(lane1.light_color, lane2.light_color)
             time.sleep(2)
