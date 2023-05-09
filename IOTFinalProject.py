@@ -50,10 +50,10 @@ def laserSetup():
     GPIO.setmode(GPIO.BCM)  # Use BCM numbering for GPIO pins
     GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)  # Set pin mode as output
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
+    GPIO.setup(RECEIVER_PIN, GPIO.OUT)  # Set pin mode as output
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(BUZZER_PIN, GPIO.OUT)   # Set pin mode as output
-    # Set pin to high(+3.3V) to off the beep
     GPIO.output(BUZZER_PIN, GPIO.LOW)
 
 
