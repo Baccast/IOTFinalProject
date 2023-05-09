@@ -50,6 +50,13 @@ def laserSetup():
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
+def setup_button():
+    # Set up the button
+    GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(BUTTON_PIN, GPIO.FALLING,
+                          callback=handle_button_click, bouncetime=200)
+
+
 def run_traffic_simulation(gui):
     # Initialize the lane objects
     lane1 = TrafficLane('Lane 1')
@@ -120,6 +127,7 @@ class TrafficLane:
 if __name__ == "__main__":
     # Set up the laser sensor and button
     laserSetup()
+    setup_button()
 
     # Initialize the lane objects
     lane1 = TrafficLane('Lane 1')
