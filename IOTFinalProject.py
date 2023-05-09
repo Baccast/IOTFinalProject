@@ -11,15 +11,17 @@ class TrafficLightGUI:
     def __init__(self, root):
         self.root = root
         self.lane1_light = tk.Label(
-            root, text='Lane 1: Red', font=('Arial', 16))
+            root, text='Lane 1: Red', font=('Arial', 16), fg='red')
         self.lane2_light = tk.Label(
-            root, text='Lane 2: Red', font=('Arial', 16))
+            root, text='Lane 2: Red', font=('Arial', 16), fg='red')
         self.lane1_light.pack()
         self.lane2_light.pack()
 
     def update_lights(self, lane1_color, lane2_color):
-        self.lane1_light.config(text=f'Lane 1: {lane1_color}')
-        self.lane2_light.config(text=f'Lane 2: {lane2_color}')
+        self.lane1_light.config(
+            text=f'Lane 1: {lane1_color}', fg='green' if lane1_color == 'Green' else 'red')
+        self.lane2_light.config(
+            text=f'Lane 2: {lane2_color}', fg='green' if lane2_color == 'Green' else 'red')
         self.root.update()
 
 
