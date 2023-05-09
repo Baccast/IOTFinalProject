@@ -14,25 +14,14 @@ class TrafficLightGUI:
             root, text='Lane 1: Red', font=('Arial', 16), fg='red')
         self.lane2_light = tk.Label(
             root, text='Lane 2: Red', font=('Arial', 16), fg='red')
-        self.crossing_label = tk.Label(
-            root, text='', font=('Arial', 16), fg='black')
         self.lane1_light.pack()
         self.lane2_light.pack()
-        self.crossing_label.pack()
-        self.crossing_state = False
 
     def update_lights(self, lane1_color, lane2_color):
         self.lane1_light.config(
             text=f'Lane 1: {lane1_color}', fg='green' if lane1_color == 'Green' else 'red')
         self.lane2_light.config(
             text=f'Lane 2: {lane2_color}', fg='green' if lane2_color == 'Green' else 'red')
-        self.root.update()
-
-    def indicate_crossing(self):
-        self.crossing_label.config(text='Pedestrian Crossing')
-        self.root.update()
-        time.sleep(10)
-        self.crossing_label.config(text='')
         self.root.update()
 
 
@@ -66,7 +55,6 @@ def run_traffic_simulation(gui):
 
         if car_detected and not car_previous_state:
             print("Car detected in Lane 2")
-            gui.indicate_crossing()
             time.sleep(3)
 
         # Set Lane 1 green and Lane 2 red
@@ -112,48 +100,20 @@ class TrafficLane:
             self.light_color = 'Red'
 
     def set_red(self):
-        # Set the light color to red
         self.light_color = 'Red'
 
     def set_green(self):
-        # Set the light color to green
         self.light_color = 'Green'
 
     def set_yellow(self):
-        # Set the light color to yellow
         self.light_color = 'Yellow'
 
 
-def pedestrian_crossing():
-    # Callback function for the pedestrian crossing button
-    lane1.set_red()
-    lane2.set_red()
-    gui.update_lights(lane1.light_color, lane2.light_color)
-    gui.indicate_crossing()
-
-
-if __name__ == "__main__":
-    # Set up the laser sensor
+if __name__ == '__main__':
     laserSetup()
-
-    # Create the GUI window
     root = tk.Tk()
-    root.title("Traffic Light Simulation")
-
-    # Create the GUI object
+    root.title('Traffic Light Simulation')
+    root.geometry('400x200')
     gui = TrafficLightGUI(root)
-
-    # Create the pedestrian crossing button
-    pedestrian_button = tk.Button(
-        root, text="Pedestrian Crossing", command=pedestrian_crossing)
-    pedestrian_button.pack()
-
-    # Initialize the lane objects
-    lane1 = TrafficLane('Lane 1')
-    lane2 = TrafficLane('Lane 2')
-
-    try:
-        run_traffic_simulation(gui)
-    except KeyboardInterrupt:
-        GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
-        GPIO.cleanup()
+    run_traffic_simulation(gui)
+    root.mainloop()
