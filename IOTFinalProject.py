@@ -120,7 +120,6 @@ class TrafficLane:
 if __name__ == "__main__":
     # Set up the laser sensor and button
     laserSetup()
-    setup_button()
 
     # Initialize the lane objects
     lane1 = TrafficLane('Lane 1')
