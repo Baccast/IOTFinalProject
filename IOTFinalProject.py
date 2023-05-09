@@ -106,13 +106,12 @@ class TrafficLane:
         GPIO.output(LANE2YELLOW_PIN, GPIO.LOW)
         GPIO.output(LANE2GREEN_PIN, GPIO.HIGH)
 
-
-def set_yellow(self):
-    # Set the light color to yellow
-    self.light_color = 'Yellow'
-    GPIO.output(LANE2RED_PIN, GPIO.LOW)
-    GPIO.output(LANE2GREEN_PIN, GPIO.LOW)
-    GPIO.output(LANE2YELLOW_PIN, GPIO.HIGH)
+    def set_yellow(self):
+        # Set the light color to yellow
+        self.light_color = 'Yellow'
+        GPIO.output(LANE2RED_PIN, GPIO.LOW)
+        GPIO.output(LANE2GREEN_PIN, GPIO.LOW)
+        GPIO.output(LANE2YELLOW_PIN, GPIO.HIGH)
 
 
 if __name__ == "__main__":
