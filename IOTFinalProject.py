@@ -41,6 +41,29 @@ class TrafficLightGUI:
         self.lane2_light.config(text=lane2_text, fg=lane2_fg_color)
         self.root.update()
 
+    def showPedestrian(self):
+        # Add a PNG image for a pedestrian crossing
+        self.crossing_img = tk.PhotoImage(file="pedestrian.png")
+        crossing_label = tk.Label(root, image=self.crossing_img)
+        crossing_label.pack()
+
+        # Make the two lane labels flash
+
+        for i in range(10):
+
+            self.lane1_light.config(bg='red', fg='white')
+            self.lane2_light.config(bg='red', fg='white')
+            root.update_idletasks()
+            root.after(200)
+            self.lane1_light.config(bg='white', fg='red')
+            self.lane2_light.config(bg='white', fg='red')
+            root.update_idletasks()
+            root.after(200)
+        # Delete the pedestrian crossing image and stop flashing the lanes after 2 seconds
+        root.after(2000, lambda: crossing_label.pack_forget())
+        root.after(2000, lambda: self.lane1_light.config(bg='white', fg='red'))
+        root.after(2000, lambda: self.lane2_light.config(bg='white', fg='red'))
+
 
 # Set up the laser sensor
 def laserSetup():
@@ -137,6 +160,8 @@ def crossWalk():
     time.sleep(1)
     GPIO.output(BUZZER_PIN, GPIO.LOW)
     # For 10 seconds force both lights to stay red
+    gui = TrafficLightGUI(root)
+    gui.showPedestrian()
     endTime = time.time() + 10
     while time.time() < endTime:
         lane1.set_red()
