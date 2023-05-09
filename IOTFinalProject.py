@@ -18,9 +18,10 @@ def toggle_lights(lane1, lane2):
 def laserSetup():
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)         # Numbers pins by physical location
-    GPIO.setup(RECEIVER_PIN, GPIO.OUT)   # Set pin mode as output
-    # Set pin to high(+3.3V) to off the laser
+    GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)   # Set pin mode as output
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
+    # Set LaserRecvPin's mode as input, and pull up to high level(3.3V)
+    GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
 def run_traffic_simulation():
