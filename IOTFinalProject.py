@@ -51,18 +51,18 @@ class TrafficLightGUI:
 
         for i in range(10):
 
-            self.lane1_light.config(bg='red', fg='white')
-            self.lane2_light.config(bg='red', fg='white')
+            self.lane1_light.config(fg='white')
+            self.lane2_light.config(fg='white')
             root.update_idletasks()
             root.after(200)
-            self.lane1_light.config(bg='white', fg='red')
-            self.lane2_light.config(bg='white', fg='red')
+            self.lane1_light.config(fg='red')
+            self.lane2_light.config(fg='red')
             root.update_idletasks()
             root.after(200)
         # Delete the pedestrian crossing image and stop flashing the lanes after 2 seconds
-        root.after(2000, lambda: crossing_label.pack_forget())
-        root.after(2000, lambda: self.lane1_light.config(bg='white', fg='red'))
-        root.after(2000, lambda: self.lane2_light.config(bg='white', fg='red'))
+        root.after(10000, lambda: crossing_label.pack_forget())
+        root.after(10000, lambda: self.lane1_light.config(fg='red'))
+        root.after(10000, lambda: self.lane2_light.config(fg='red'))
 
 
 # Set up the laser sensor
