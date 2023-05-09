@@ -112,11 +112,13 @@ def crossWalk():
     lane1 = TrafficLane('Lane 1')
     lane2 = TrafficLane('Lane 2')
 
-    # Turn both lights red and sleep for 10 seconds
-    lane1.set_red()
-    lane2.set_red()
-    gui.update_lights(lane1.light_color, lane2.light_color)
-    time.sleep(10)
+    # For 10 seconds force both lights to stay red
+    endTime = time.time() + 10
+    while time.time() < endTime:
+        lane1.set_red()
+        lane2.set_red()
+        gui.update_lights(lane1.light_color, lane2.light_color)
+        time.sleep(1)
 
 
 class TrafficLane:
