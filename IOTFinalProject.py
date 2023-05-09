@@ -54,7 +54,7 @@ def setup_button(lane1, lane2):
     # Set up the button
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.add_event_detect(BUTTON_PIN, GPIO.FALLING,
-                          callback=lambda _: handle_button_click(lane1, lane2), bouncetime=200)
+                          callback=lambda _: handle_button_click(lane1, lane2, gui), bouncetime=200)
 
 
 def run_traffic_simulation(gui):
@@ -79,7 +79,8 @@ def run_traffic_simulation(gui):
         gui.update_lights(lane1.light_color, lane2.light_color)
         time.sleep(5)
 
-        # Set Lane 1 red and Lane 2 green if car is detected
+        # Set Lane 1 red and Lane 2 green if
+        # car is detected
         if car_detected:
             lane1.set_yellow()
             time.sleep(2)
@@ -100,10 +101,9 @@ def detect_car():
         return True
     else:
         return False
-    time.sleep(0.1)
 
 
-def handle_button_click(lane1, lane2):
+def handle_button_click(lane1, lane2, gui):
     # Handle button click event
     print("Button clicked")
     # Set Lane 1 and Lane 2 lights to red for 10 seconds
