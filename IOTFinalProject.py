@@ -47,22 +47,8 @@ class TrafficLightGUI:
         crossing_label = tk.Label(root, image=self.crossing_img)
         crossing_label.pack()
 
-        # Make the two lane labels flash
-
-        for i in range(10):
-
-            self.lane1_light.config(fg='white')
-            self.lane2_light.config(fg='white')
-            root.update_idletasks()
-            root.after(200)
-            self.lane1_light.config(fg='red')
-            self.lane2_light.config(fg='red')
-            root.update_idletasks()
-            root.after(200)
-        # Delete the pedestrian crossing image and stop flashing the lanes after 2 seconds
+        # Delete the pedestrian crossing image
         root.after(10000, lambda: crossing_label.pack_forget())
-        root.after(10000, lambda: self.lane1_light.config(fg='red'))
-        root.after(10000, lambda: self.lane2_light.config(fg='red'))
 
 
 # Set up the laser sensor
