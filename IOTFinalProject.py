@@ -16,7 +16,6 @@ def toggle_lights(lane1, lane2):
 
 
 def laserSetup():
-    GPIO.setmode(GPIO.BOARD)
     GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
