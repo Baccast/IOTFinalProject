@@ -50,11 +50,11 @@ def laserSetup():
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
-def setup_button():
+def setup_button(lane1, lane2):
     # Set up the button
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.add_event_detect(BUTTON_PIN, GPIO.FALLING,
-                          callback=handle_button_click, bouncetime=200)
+                          callback=lambda _: handle_button_click(lane1, lane2), bouncetime=200)
 
 
 def run_traffic_simulation(gui):
@@ -103,9 +103,8 @@ def detect_car():
     time.sleep(0.1)
 
 
-def handle_button_click(channel):
+def handle_button_click(lane1, lane2):
     # Handle button click event
-    global lane1, lane2  # Make lane1 and lane2 global variables
     print("Button clicked")
     # Set Lane 1 and Lane 2 lights to red for 10 seconds
     lane1.set_red()
@@ -121,13 +120,29 @@ class TrafficLane:
         self.name = name
         self.light_color = 'Red'
 
+    def toggle(self):
+        # Toggle the light color
+        if self.light_color == 'Red':
+            self.light_color = 'Green'
+        else:
+            self.light_color = 'Red'
 
-# Rest of the code...
+    def set_red(self):
+        # Set the light color to red
+        self.light_color = 'Red'
+
+    def set_green(self):
+        # Set the light color to green
+        self.light_color = 'Green'
+
+    def set_yellow(self):
+        # Set the light color to yellow
+        self.light_color = 'Yellow'
+
 
 if __name__ == "__main__":
     # Set up the laser sensor and button
     laserSetup()
-    setup_button()
 
     # Initialize the lane objects
     lane1 = TrafficLane('Lane 1')
@@ -139,6 +154,9 @@ if __name__ == "__main__":
 
     # Create the GUI object
     gui = TrafficLightGUI(root)
+
+    # Set up the button
+    setup_button(lane1, lane2)
 
     # Run the traffic simulation
     try:
