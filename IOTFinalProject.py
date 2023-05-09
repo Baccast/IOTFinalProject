@@ -131,5 +131,8 @@ if __name__ == "__main__":
     try:
         run_traffic_simulation()
     except KeyboardInterrupt:
+        GPIO.output(LANE2GREEN_PIN, GPIO.HIGH)  # Turn off all lights
+        GPIO.output(LANE2RED_PIN, GPIO.HIGH)
+        GPIO.output(LANE2YELLOW_PIN, GPIO.HIGH)
         GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
         GPIO.cleanup()
