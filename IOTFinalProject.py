@@ -45,7 +45,6 @@ def run_traffic_simulation():
             time.sleep(5)
         else:
             print("No car detected in Lane 2")
-            time.sleep(5)
 
 
 def detect_car():
