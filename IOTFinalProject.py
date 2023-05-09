@@ -5,8 +5,15 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
+LANE2GREEN_PIN = 22
+LANE2RED_PIN = 6
+LANE2YELLOW_PIN = 5
+
 GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)
 GPIO.setup(RECEIVER_PIN, GPIO.IN)
+GPIO.setup(LANE2GREEN_PIN, GPIO.OUT)
+GPIO.setup(LANE2RED_PIN, GPIO.OUT)
+GPIO.setup(LANE2YELLOW_PIN, GPIO.OUT)
 
 
 def toggle_lights(lane1, lane2):
@@ -88,14 +95,24 @@ class TrafficLane:
     def set_red(self):
         # Set the light color to red
         self.light_color = 'Red'
+        GPIO.output(LANE2GREEN_PIN, GPIO.LOW)
+        GPIO.output(LANE2YELLOW_PIN, GPIO.LOW)
+        GPIO.output(LANE2RED_PIN, GPIO.HIGH)
 
     def set_green(self):
         # Set the light color to green
         self.light_color = 'Green'
+        GPIO.output(LANE2RED_PIN, GPIO.LOW)
+        GPIO.output(LANE2YELLOW_PIN, GPIO.LOW)
+        GPIO.output(LANE2GREEN_PIN, GPIO.HIGH)
 
-    def set_yellow(self):
-        # Set the light color to yellow
-        self.light_color = 'Yellow'
+
+def set_yellow(self):
+    # Set the light color to yellow
+    self.light_color = 'Yellow'
+    GPIO.output(LANE2RED_PIN, GPIO.LOW)
+    GPIO.output(LANE2GREEN_PIN, GPIO.LOW)
+    GPIO.output(LANE2YELLOW_PIN, GPIO.HIGH)
 
 
 if __name__ == "__main__":
