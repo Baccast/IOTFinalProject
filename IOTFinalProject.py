@@ -85,7 +85,7 @@ def run_traffic_simulation(gui):
 
         # Set Lane 1 green and Lane 2 red
         lane2.set_yellow()
-        Lane2.set_red()
+        lane2.set_red()
         time.sleep(2)
         lane1.set_green()
         lane2.set_red()
