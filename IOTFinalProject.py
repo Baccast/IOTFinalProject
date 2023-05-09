@@ -45,12 +45,7 @@ def run_traffic_simulation():
             time.sleep(5)
         else:
             print("No car detected in Lane 2")
-
-        # Set Lane 1 red and Lane 2 yellow
-        lane1.set_red()
-        lane2.set_yellow()
-        print_lights(lane1, lane2)
-        time.sleep(2)
+            time.sleep(5)
 
 
 def detect_car():
