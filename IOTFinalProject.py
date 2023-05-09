@@ -50,7 +50,7 @@ def laserSetup():
     GPIO.setmode(GPIO.BCM)  # Use BCM numbering for GPIO pins
     GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)  # Set pin mode as output
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
-    GPIO.setup(LaserRecvPin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(BUZZER_PIN, GPIO.OUT)   # Set pin mode as output
     GPIO.output(BUZZER_PIN, GPIO.LOW)
