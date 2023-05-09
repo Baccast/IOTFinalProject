@@ -64,6 +64,7 @@ def run_traffic_simulation(gui):
             lane2.set_green()
             gui.update_lights(lane1.light_color, lane2.light_color)
             time.sleep(5)
+            car_previous_state = car_detected
 
         # Set Lane 1 green and Lane 2 red
         lane1.set_green()
