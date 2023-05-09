@@ -98,6 +98,7 @@ def detect_car():
 
 def handle_button_click(channel):
     # Handle button click event
+    global lane1, lane2  # Make lane1 and lane2 global variables
     print("Button clicked")
     # Set Lane 1 and Lane 2 lights to red for 10 seconds
     lane1.set_red()
@@ -108,41 +109,22 @@ def handle_button_click(channel):
     gui.update_status("")
 
 
-def setup_button():
-    # Set up button event detection
-    GPIO.add_event_detect(BUTTON_PIN, GPIO.FALLING,
-                          callback=handle_button_click, bouncetime=200)
-
-
 class TrafficLane:
     def __init__(self, name):
         self.name = name
         self.light_color = 'Red'
 
-    def toggle(self):
-        # Toggle the light color
-        if self.light_color == 'Red':
-            self.light_color = 'Green'
-        else:
-            self.light_color = 'Red'
 
-    def set_red(self):
-        # Set the light color to red
-        self.light_color = 'Red'
-
-    def set_green(self):
-        # Set the light color to green
-        self.light_color = 'Green'
-
-    def set_yellow(self):
-        # Set the light color to yellow
-        self.light_color = 'Yellow'
-
+# Rest of the code...
 
 if __name__ == "__main__":
     # Set up the laser sensor and button
     laserSetup()
     setup_button()
+
+    # Initialize the lane objects
+    lane1 = TrafficLane('Lane 1')
+    lane2 = TrafficLane('Lane 2')
 
     # Create the GUI window
     root = tk.Tk()
