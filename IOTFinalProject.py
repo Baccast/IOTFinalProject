@@ -134,6 +134,9 @@ def crossWalk():
     lane2.set_yellow()
     gui.update_lights(lane1.light_color, lane2.light_color)
     time.sleep(2)
+    GPIO.output(BUZZER_PIN, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(BUZZER_PIN, GPIO.LOW)
     # For 10 seconds force both lights to stay red
     endTime = time.time() + 10
     while time.time() < endTime:
