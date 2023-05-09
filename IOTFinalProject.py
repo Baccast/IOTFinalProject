@@ -54,7 +54,7 @@ def laserSetup():
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(BUZZER_PIN, GPIO.OUT)   # Set pin mode as output
     # Set pin to high(+3.3V) to off the beep
-    GPIO.output(BUZZER_PIN, GPIO.HIGH)
+    GPIO.output(BUZZER_PIN, GPIO.LOW)
 
 
 # Run the traffic simulation
