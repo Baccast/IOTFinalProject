@@ -99,7 +99,9 @@ def detect_button():
     # Check whether the button is pressed or not.
     button_state = GPIO.input(BUTTON_PIN)
     if button_state == GPIO.LOW:
-        return True
+        # await button release and return True
+        while GPIO.input(BUTTON_PIN) == GPIO.LOW:
+            return True
     else:
         return False
     time.sleep(0.1)
