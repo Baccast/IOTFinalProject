@@ -109,6 +109,9 @@ def detect_car():
 
 
 def crossWalk():
+    lane1 = TrafficLane('Lane 1')
+    lane2 = TrafficLane('Lane 2')
+
     # Turn both lights red and sleep for 10 seconds
     lane1.set_red()
     lane2.set_red()
