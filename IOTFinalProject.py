@@ -15,6 +15,14 @@ def toggle_lights(lane1, lane2):
     lane2.toggle()
 
 
+def laserSetup():
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)         # Numbers pins by physical location
+    GPIO.setup(RECEIVER_PIN, GPIO.OUT)   # Set pin mode as output
+    # Set pin to high(+3.3V) to off the laser
+    GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
+
+
 def run_traffic_simulation():
     # Initialize the lane objects
     lane1 = TrafficLane('Lane 1')
@@ -92,5 +100,12 @@ class TrafficLane:
         self.light_color = 'Yellow'
 
 
-# Run the traffic simulation
-run_traffic_simulation()
+if "__main__" == __name__:
+    # Set up the laser sensor
+    laserSetup()
+    # Run the traffic simulation
+    try:
+        run_traffic_simulation()
+    except KeyboardInterrupt:
+        GPIO.output(LaserPin, GPIO.HIGH)
+        GPIO.cleanup()
