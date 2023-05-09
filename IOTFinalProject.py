@@ -7,6 +7,7 @@ import threading
 TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
 BUTTON_PIN = 22
+BUZZER_PIN = 6
 
 # GUI settings
 
@@ -51,6 +52,10 @@ def laserSetup():
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(BUZZER_PIN, GPIO.OUT)   # Set pin mode as output
+    # Set pin to high(+3.3V) to off the beep
+    GPIO.output(BUZZER_PIN, GPIO.HIGH)
+
 
 # Run the traffic simulation
 
