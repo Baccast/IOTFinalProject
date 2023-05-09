@@ -5,7 +5,6 @@ import tkinter as tk
 # Set up GPIO pins
 TRANSMITTER_PIN = 17
 RECEIVER_PIN = 27
-BUTTON_PIN = 22
 
 
 class TrafficLightGUI:
@@ -15,11 +14,12 @@ class TrafficLightGUI:
             root, text='Lane 1: Red', font=('Arial', 16), fg='red')
         self.lane2_light = tk.Label(
             root, text='Lane 2: Red', font=('Arial', 16), fg='red')
-        self.status_label = tk.Label(
+        self.crossing_label = tk.Label(
             root, text='', font=('Arial', 16), fg='black')
         self.lane1_light.pack()
         self.lane2_light.pack()
-        self.status_label.pack()
+        self.crossing_label.pack()
+        self.crossing_state = False
 
     def update_lights(self, lane1_color, lane2_color):
         self.lane1_light.config(
@@ -28,8 +28,11 @@ class TrafficLightGUI:
             text=f'Lane 2: {lane2_color}', fg='green' if lane2_color == 'Green' else 'red')
         self.root.update()
 
-    def update_status(self, status):
-        self.status_label.config(text=status)
+    def indicate_crossing(self):
+        self.crossing_label.config(text='Pedestrian Crossing')
+        self.root.update()
+        time.sleep(10)
+        self.crossing_label.config(text='')
         self.root.update()
 
 
@@ -45,16 +48,8 @@ def laserSetup():
     GPIO.setup(TRANSMITTER_PIN, GPIO.OUT)  # Set pin mode as output
     GPIO.output(TRANSMITTER_PIN, GPIO.HIGH)
     GPIO.setup(RECEIVER_PIN, GPIO.IN)
-    GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     # Set LaserRecvPin's mode as input, and pull up to high level(3.3V)
     GPIO.setup(RECEIVER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
-
-def setup_button(lane1, lane2):
-    # Set up the button
-    GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.add_event_detect(BUTTON_PIN, GPIO.FALLING,
-                          callback=lambda _: handle_button_click(lane1, lane2, gui), bouncetime=200)
 
 
 def run_traffic_simulation(gui):
@@ -71,6 +66,7 @@ def run_traffic_simulation(gui):
 
         if car_detected and not car_previous_state:
             print("Car detected in Lane 2")
+            gui.indicate_crossing()
             time.sleep(3)
 
         # Set Lane 1 green and Lane 2 red
@@ -79,8 +75,7 @@ def run_traffic_simulation(gui):
         gui.update_lights(lane1.light_color, lane2.light_color)
         time.sleep(5)
 
-        # Set Lane 1 red and Lane 2 green if
-        # car is detected
+        # Set Lane 1 red and Lane 2 green if car is detected
         if car_detected:
             lane1.set_yellow()
             time.sleep(2)
@@ -101,18 +96,7 @@ def detect_car():
         return True
     else:
         return False
-
-
-def handle_button_click(lane1, lane2, gui):
-    # Handle button click event
-    print("Button clicked")
-    # Set Lane 1 and Lane 2 lights to red for 10 seconds
-    lane1.set_red()
-    lane2.set_red()
-    gui.update_lights(lane1.light_color, lane2.light_color)
-    gui.update_status("Someone is crossing the road")
-    time.sleep(10)
-    gui.update_status("")
+    time.sleep(0.1)
 
 
 class TrafficLane:
@@ -140,13 +124,17 @@ class TrafficLane:
         self.light_color = 'Yellow'
 
 
-if __name__ == "__main__":
-    # Set up the laser sensor and button
-    laserSetup()
+def pedestrian_crossing():
+    # Callback function for the pedestrian crossing button
+    lane1.set_red()
+    lane2.set_red()
+    gui.update_lights(lane1.light_color, lane2.light_color)
+    gui.indicate_crossing()
 
-    # Initialize the lane objects
-    lane1 = TrafficLane('Lane 1')
-    lane2 = TrafficLane('Lane 2')
+
+if __name__ == "__main__":
+    # Set up the laser sensor
+    laserSetup()
 
     # Create the GUI window
     root = tk.Tk()
@@ -155,10 +143,15 @@ if __name__ == "__main__":
     # Create the GUI object
     gui = TrafficLightGUI(root)
 
-    # Set up the button
-    setup_button(lane1, lane2)
+    # Create the pedestrian crossing button
+    pedestrian_button = tk.Button(
+        root, text="Pedestrian Crossing", command=pedestrian_crossing)
+    pedestrian_button.pack()
 
-    # Run the traffic simulation
+    # Initialize the lane objects
+    lane1 = TrafficLane('Lane 1')
+    lane2 = TrafficLane('Lane 2')
+
     try:
         run_traffic_simulation(gui)
     except KeyboardInterrupt:
